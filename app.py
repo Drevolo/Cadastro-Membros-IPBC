@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from functools import wraps
+from cryptography.fernet import Fernet
 import sqlite3
 import os
 
@@ -7,6 +8,35 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', os.urandom(24).hex())
 
 DB_PATH = os.path.join(os.path.dirname(__file__), 'membros.db')
+
+# === CRIPTOGRAFIA ===
+def get_encryption_key():
+    key = os.environ.get('ENCRYPTION_KEY')
+    if key:
+        return key.encode()
+    key_file = os.path.join(os.path.dirname(__file__), '.encryption_key')
+    if os.path.exists(key_file):
+        with open(key_file, 'rb') as f:
+            return f.read().strip()
+    new_key = Fernet.generate_key()
+    with open(key_file, 'wb') as f:
+        f.write(new_key)
+    return new_key
+
+cipher = Fernet(get_encryption_key())
+
+def encrypt(val):
+    if not val:
+        return val
+    return cipher.encrypt(val.encode()).decode()
+
+def decrypt(val):
+    if not val:
+        return val
+    try:
+        return cipher.decrypt(val.encode()).decode()
+    except Exception:
+        return val
 
 # === AUTH ===
 ADMIN_USER = os.environ.get('ADMIN_USERNAME', 'admin')
@@ -126,9 +156,15 @@ def listar_membros():
     rows = conn.execute(query, params).fetchall()
     conn.close()
 
+    data = []
+    for r in rows:
+        d = dict(r)
+        d['endereco'] = decrypt(d['endereco'])
+        data.append(d)
+
     return jsonify({
         'total': total,
-        'data': [dict(r) for r in rows]
+        'data': data
     })
 
 @app.route('/api/membros', methods=['POST'])
@@ -151,7 +187,7 @@ def criar_membro():
         data.get('pai'), data.get('pai_religiao'), data.get('mae'), data.get('mae_religiao'),
         data.get('batismo_data'), data.get('batismo_local'), data.get('batismo_oficiante'),
         data.get('admissao_data'), data.get('admissao_modo'), data.get('admissao_deonde'), data.get('admissao_oficiante'),
-        data.get('livro_numero'), data.get('ato_numero'), data.get('endereco'), data.get('igreja')
+        data.get('livro_numero'), data.get('ato_numero'), encrypt(data.get('endereco')), data.get('igreja')
     ))
     conn.commit()
     conn.close()
@@ -177,7 +213,7 @@ def atualizar_membro(id):
         data.get('pai'), data.get('pai_religiao'), data.get('mae'), data.get('mae_religiao'),
         data.get('batismo_data'), data.get('batismo_local'), data.get('batismo_oficiante'),
         data.get('admissao_data'), data.get('admissao_modo'), data.get('admissao_deonde'), data.get('admissao_oficiante'),
-        data.get('livro_numero'), data.get('ato_numero'), data.get('endereco'), data.get('igreja'),
+        data.get('livro_numero'), data.get('ato_numero'), encrypt(data.get('endereco')), data.get('igreja'),
         id
     ))
     conn.commit()
