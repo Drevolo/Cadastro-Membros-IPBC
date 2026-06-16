@@ -1,20 +1,317 @@
-.form-section { background: #f8f9fa; border-radius: 8px; padding: 20px; }
-.form-section h5 { border-bottom: 2px solid #0d6efd; padding-bottom: 8px; margin-bottom: 16px; }
-.form-section label { font-weight: 600; font-size: 0.85rem; }
+/* ===== GERAL ===== */
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #f0f2f5;
+    color: #1a1a2e;
+}
 
-.filter-section { background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
-.filter-section label { font-size: 0.8rem; margin-bottom: 2px; }
+/* ===== CABEÇALHO ===== */
+.page-header {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #fff;
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
 
-.table-container { max-height: 55vh; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 8px; }
-.table-container thead th { position: sticky; top: 0; background: #fff; z-index: 1; box-shadow: inset 0 -1px 0 #dee2e6; }
+.page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
 
-.cursor-pointer { cursor: pointer; }
-.cursor-pointer:hover { background-color: #f0f0f0; }
+.page-header .btn-outline-light {
+    border-width: 2px;
+    font-weight: 600;
+    padding: 8px 20px;
+    font-size: 0.95rem;
+}
 
-.badge-sexo-m { background-color: #0d6efd; }
-.badge-sexo-f { background-color: #d63384; }
+/* ===== ABAS ===== */
+.nav-tabs {
+    border-bottom: none;
+    gap: 8px;
+    margin-bottom: 0;
+}
 
-.btn-sm-icon { padding: 0 6px; font-size: 1rem; line-height: 1.5; }
+.nav-tabs .nav-link {
+    border: none;
+    padding: 12px 28px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #555;
+    border-radius: 12px 12px 0 0;
+    background: #e4e6eb;
+    transition: all 0.2s;
+}
 
-.nav-tabs .nav-link { font-weight: 600; }
-.tab-content { padding-top: 20px; }
+.nav-tabs .nav-link:hover {
+    background: #d0d2d8;
+    color: #1a1a2e;
+}
+
+.nav-tabs .nav-link.active {
+    background: #fff;
+    color: #1a1a2e;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+}
+
+.tab-content {
+    background: #fff;
+    border-radius: 0 12px 12px 12px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+/* ===== FORMULÁRIO ===== */
+.form-section label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #333;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.form-section .form-control,
+.form-section .form-select {
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    background: #fafafa;
+}
+
+.form-section .form-control:focus,
+.form-section .form-select:focus {
+    border-color: #1a1a2e;
+    box-shadow: 0 0 0 3px rgba(26, 26, 46, 0.12);
+    background: #fff;
+}
+
+.form-section .form-control:hover,
+.form-section .form-select:hover {
+    border-color: #888;
+}
+
+.form-section .section-group {
+    background: #f8f9fc;
+    border-radius: 10px;
+    padding: 16px 16px 8px;
+    margin-bottom: 12px;
+    border-left: 4px solid #1a1a2e;
+}
+
+.form-section .section-group-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-section .section-group-title::before {
+    content: '▸';
+    font-size: 1.1rem;
+}
+
+/* ===== BOTÕES ===== */
+.btn {
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    transition: all 0.2s;
+    border-width: 2px;
+}
+
+.btn-primary {
+    background: #1a1a2e;
+    border-color: #1a1a2e;
+}
+
+.btn-primary:hover {
+    background: #2d2d5e;
+    border-color: #2d2d5e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(26, 26, 46, 0.25);
+}
+
+.btn-outline-secondary {
+    border-color: #ccc;
+    color: #555;
+}
+
+.btn-outline-secondary:hover {
+    background: #f0f0f0;
+    border-color: #aaa;
+}
+
+/* ===== BADGE STATUS ===== */
+#formStatus {
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* ===== FILTROS ===== */
+.filter-section {
+    background: #f8f9fc;
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.filter-section label {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #555;
+    margin-bottom: 3px;
+    display: block;
+}
+
+.filter-section .form-control,
+.filter-section .form-select {
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    background: #fff;
+}
+
+.filter-section .form-control:focus,
+.filter-section .form-select:focus {
+    border-color: #1a1a2e;
+    box-shadow: 0 0 0 3px rgba(26, 26, 46, 0.1);
+}
+
+/* ===== TABELA ===== */
+.table-container {
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table-container table {
+    margin-bottom: 0;
+}
+
+.table-container thead th {
+    position: sticky;
+    top: 0;
+    background: #1a1a2e;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 12px 10px;
+    border-bottom: none;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.table-container tbody td {
+    padding: 10px;
+    font-size: 0.88rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.table-container tbody tr {
+    transition: background 0.15s;
+    cursor: pointer;
+}
+
+.table-container tbody tr:hover {
+    background: #eef2ff !important;
+}
+
+.table-container tbody tr:active {
+    background: #dde4ff !important;
+}
+
+/* ===== SEXO BADGE ===== */
+.badge-sexo-m {
+    background-color: #1a1a2e;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.badge-sexo-f {
+    background-color: #8b2252;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+/* ===== BOTÃO EXCLUIR ===== */
+.btn-outline-danger {
+    border-width: 2px;
+    padding: 4px 10px;
+    font-size: 1rem;
+    line-height: 1.2;
+    border-radius: 6px;
+    opacity: 0.6;
+    transition: all 0.2s;
+}
+
+.btn-outline-danger:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* ===== TOTAL REGISTROS ===== */
+#totalRegistros {
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* ===== EMPTY STATE ===== */
+#emptyState {
+    padding: 40px 20px;
+}
+
+#emptyState p {
+    font-size: 1.1rem;
+    color: #999;
+}
+
+/* ===== HR ===== */
+hr {
+    opacity: 0.3;
+    margin: 4px 0;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav-tabs .nav-link {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+
+    .tab-content {
+        padding: 16px;
+        border-radius: 0 0 12px 12px;
+    }
+
+    .form-section .section-group {
+        padding: 12px 12px 4px;
+    }
+}
