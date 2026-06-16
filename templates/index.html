@@ -12,9 +12,14 @@
 
         <div class="page-header">
             <h1>Cadastro de Membros - IPBC</h1>
-            <button class="btn btn-outline-light" onclick="exportarCSV()">
-                &#8595; Exportar CSV
-            </button>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-light" onclick="exportarCSV()">
+                    &#8595; Exportar CSV
+                </button>
+                <a href="/logout" class="btn btn-outline-light" style="border-color:rgba(255,255,255,0.3)">
+                    Sair
+                </a>
+            </div>
         </div>
 
         <ul class="nav nav-tabs" id="mainTabs">
