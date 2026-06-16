@@ -1,5 +1,4 @@
 membros.db
-.encryption_key
 __pycache__/
 *.pyc
 .env
