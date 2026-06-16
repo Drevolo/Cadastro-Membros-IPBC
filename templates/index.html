@@ -12,170 +12,176 @@
 
         <div class="page-header">
             <h1>Cadastro de Membros - IPBC</h1>
-            <button class="btn btn-outline-light" onclick="exportarCSV()">Exportar CSV</button>
+            <button class="btn btn-outline-light" onclick="exportarCSV()">
+                &#8595; Exportar CSV
+            </button>
         </div>
 
         <ul class="nav nav-tabs" id="mainTabs">
             <li class="nav-item">
-                <button class="nav-link active" id="tab-inserir" data-bs-toggle="tab" data-bs-target="#inserir" type="button">Inserir Novo Membro</button>
+                <button class="nav-link active" id="tab-inserir" data-bs-toggle="tab" data-bs-target="#inserir" type="button">
+                    <span class="tab-icon">+</span> Inserir Novo Membro
+                </button>
             </li>
             <li class="nav-item">
-                <button class="nav-link" id="tab-pesquisar" data-bs-toggle="tab" data-bs-target="#pesquisar" type="button">Pesquisar Membro</button>
+                <button class="nav-link" id="tab-pesquisar" data-bs-toggle="tab" data-bs-target="#pesquisar" type="button">
+                    <span class="tab-icon">&#128269;</span> Pesquisar Membro
+                </button>
             </li>
         </ul>
 
         <div class="tab-content">
             <!-- ===== ABA INSERIR ===== -->
             <div class="tab-pane fade show active" id="inserir">
-                <div class="form-section">
-                    <input type="hidden" id="membro-id">
+                <input type="hidden" id="membro-id">
 
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="mb-0" style="font-weight:700">Dados do Membro</h5>
-                        <span class="badge bg-secondary" id="formStatus">Novo</span>
+                <div class="form-top-bar">
+                    <h5>Dados do Membro</h5>
+                    <span class="badge" id="formStatus">Novo</span>
+                </div>
+
+                <!-- Linha inicial: Nome + Sexo + Igreja -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label style="font-weight:700; font-size:0.85rem; color:#333; display:block; margin-bottom:4px;">Nome</label>
+                        <input type="text" class="form-control" id="form-nome" placeholder="Nome completo" style="border:2px solid #e5e7eb; border-radius:8px; padding:10px 14px; font-size:0.95rem;">
                     </div>
+                    <div class="col-md-3">
+                        <label style="font-weight:700; font-size:0.85rem; color:#333; display:block; margin-bottom:4px;">Sexo</label>
+                        <select class="form-select" id="form-sexo" style="border:2px solid #e5e7eb; border-radius:8px; padding:10px 14px;">
+                            <option value="">Selecione</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label style="font-weight:700; font-size:0.85rem; color:#333; display:block; margin-bottom:4px;">Igreja</label>
+                        <input type="text" class="form-control" id="form-igreja" placeholder="Nome da igreja" style="border:2px solid #e5e7eb; border-radius:8px; padding:10px 14px; font-size:0.95rem;">
+                    </div>
+                </div>
 
+                <!-- 1. Nascimento -->
+                <div class="form-card form-card-nascimento">
+                    <div class="form-card-header">
+                        <span class="form-card-number">1</span>
+                        <span class="form-card-title">Nascimento</span>
+                    </div>
                     <div class="row g-3">
+                        <div class="col-md-4">
+                            <label>Data</label>
+                            <input type="date" class="form-control" id="form-nascimento_data">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Cidade</label>
+                            <input type="text" class="form-control" id="form-nascimento_cidade" placeholder="Cidade onde nasceu">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Estado</label>
+                            <input type="text" class="form-control" id="form-nascimento_estado" placeholder="Ex: SP, RJ, MG">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Filiação -->
+                <div class="form-card form-card-filiacao">
+                    <div class="form-card-header">
+                        <span class="form-card-number">2</span>
+                        <span class="form-card-title">Filia&ccedil;&atilde;o</span>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label>Pai</label>
+                            <input type="text" class="form-control" id="form-pai" placeholder="Nome do pai">
+                        </div>
+                        <div class="col-md-3">
+                            <label>Religi&atilde;o (Pai)</label>
+                            <input type="text" class="form-control" id="form-pai_religiao" placeholder="Religi&atilde;o">
+                        </div>
+                        <div class="col-md-3">
+                            <label>M&atilde;e</label>
+                            <input type="text" class="form-control" id="form-mae" placeholder="Nome da m&atilde;e">
+                        </div>
+                        <div class="col-md-3">
+                            <label>Religi&atilde;o (M&atilde;e)</label>
+                            <input type="text" class="form-control" id="form-mae_religiao" placeholder="Religi&atilde;o">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Batismo -->
+                <div class="form-card form-card-batismo">
+                    <div class="form-card-header">
+                        <span class="form-card-number">3</span>
+                        <span class="form-card-title">Batismo</span>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label>Data</label>
+                            <input type="date" class="form-control" id="form-batismo_data">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Igreja / Local</label>
+                            <input type="text" class="form-control" id="form-batismo_local" placeholder="Onde foi batizado">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Oficiante</label>
+                            <input type="text" class="form-control" id="form-batismo_oficiante" placeholder="Quem batizou">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Admissão -->
+                <div class="form-card form-card-admissao">
+                    <div class="form-card-header">
+                        <span class="form-card-number">4</span>
+                        <span class="form-card-title">Admiss&atilde;o</span>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label>Data</label>
+                            <input type="date" class="form-control" id="form-admissao_data">
+                        </div>
+                        <div class="col-md-3">
+                            <label>Modo</label>
+                            <input type="text" class="form-control" id="form-admissao_modo" placeholder="Ex: Batismo, Aclama&ccedil;&atilde;o">
+                        </div>
+                        <div class="col-md-3">
+                            <label>De onde</label>
+                            <input type="text" class="form-control" id="form-admissao_deonde" placeholder="Igreja de origem">
+                        </div>
+                        <div class="col-md-3">
+                            <label>Oficiante</label>
+                            <input type="text" class="form-control" id="form-admissao_oficiante" placeholder="Quem oficiou">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Registro -->
+                <div class="form-card form-card-registro">
+                    <div class="form-card-header">
+                        <span class="form-card-number">5</span>
+                        <span class="form-card-title">Registro</span>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label>Livro n&ordm;</label>
+                            <input type="text" class="form-control" id="form-livro_numero" placeholder="N&uacute;mero do livro">
+                        </div>
+                        <div class="col-md-3">
+                            <label>Ato n&ordm;</label>
+                            <input type="text" class="form-control" id="form-ato_numero" placeholder="N&uacute;mero do ato">
+                        </div>
                         <div class="col-md-6">
-                            <label>Nome</label>
-                            <input type="text" class="form-control form-control-sm" id="form-nome" placeholder="Nome completo">
-                        </div>
-                        <div class="col-md-3">
-                            <label>Sexo</label>
-                            <select class="form-select form-select-sm" id="form-sexo">
-                                <option value="">Selecione</option>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Feminino">Feminino</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label>Igreja</label>
-                            <input type="text" class="form-control form-control-sm" id="form-igreja" placeholder="Nome da igreja">
+                            <label>Endere&ccedil;o</label>
+                            <input type="text" class="form-control" id="form-endereco" placeholder="Endere&ccedil;o completo">
                         </div>
                     </div>
+                </div>
 
-                    <div class="row g-3 mt-2">
-                        <div class="col-12">
-                            <div class="section-group">
-                                <div class="section-group-title">Nascimento</div>
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <label>Data</label>
-                                        <input type="date" class="form-control form-control-sm" id="form-nascimento_data">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label>Cidade</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-nascimento_cidade" placeholder="Cidade onde nasceu">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label>Estado</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-nascimento_estado" placeholder="Ex: SP, RJ, MG">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <div class="section-group">
-                                <div class="section-group-title">Filia&ccedil;&atilde;o</div>
-                                <div class="row g-3">
-                                    <div class="col-md-3">
-                                        <label>Pai</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-pai" placeholder="Nome do pai">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>Religi&atilde;o (Pai)</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-pai_religiao" placeholder="Religi&atilde;o">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>M&atilde;e</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-mae" placeholder="Nome da m&atilde;e">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>Religi&atilde;o (M&atilde;e)</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-mae_religiao" placeholder="Religi&atilde;o">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <div class="section-group">
-                                <div class="section-group-title">Batismo</div>
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <label>Data</label>
-                                        <input type="date" class="form-control form-control-sm" id="form-batismo_data">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label>Igreja / Local</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-batismo_local" placeholder="Onde foi batizado">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label>Oficiante</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-batismo_oficiante" placeholder="Quem batizou">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <div class="section-group">
-                                <div class="section-group-title">Admiss&atilde;o</div>
-                                <div class="row g-3">
-                                    <div class="col-md-3">
-                                        <label>Data</label>
-                                        <input type="date" class="form-control form-control-sm" id="form-admissao_data">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>Modo</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-admissao_modo" placeholder="Ex: Batismo, Aclama&ccedil;&atilde;o">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>De onde</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-admissao_deonde" placeholder="Igreja de origem">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>Oficiante</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-admissao_oficiante" placeholder="Quem oficiou">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <div class="section-group">
-                                <div class="section-group-title">Registro</div>
-                                <div class="row g-3">
-                                    <div class="col-md-3">
-                                        <label>Livro n&ordm;</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-livro_numero" placeholder="N&uacute;mero do livro">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>Ato n&ordm;</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-ato_numero" placeholder="N&uacute;mero do ato">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Endere&ccedil;o</label>
-                                        <input type="text" class="form-control form-control-sm" id="form-endereco" placeholder="Endere&ccedil;o completo">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 d-flex gap-3">
-                        <button class="btn btn-primary px-4" onclick="salvar()">Salvar</button>
-                        <button class="btn btn-outline-secondary px-4" onclick="limparForm()" id="btnCancelar" style="display:none">Cancelar</button>
-                    </div>
+                <!-- Botões -->
+                <div class="form-actions">
+                    <button class="btn btn-primary px-4" onclick="salvar()">Salvar</button>
+                    <button class="btn btn-outline-secondary px-4" onclick="limparForm()" id="btnCancelar" style="display:none">Cancelar</button>
                 </div>
             </div>
 
@@ -185,11 +191,11 @@
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label>Nome</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-nome" placeholder="Digite um nome" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-nome" placeholder="Digite um nome" oninput="filtrar()">
                         </div>
                         <div class="col-md-2">
                             <label>Sexo</label>
-                            <select class="form-select form-select-sm" id="filtro-sexo" onchange="filtrar()">
+                            <select class="form-select" id="filtro-sexo" onchange="filtrar()">
                                 <option value="">Todos</option>
                                 <option value="Masculino">Masculino</option>
                                 <option value="Feminino">Feminino</option>
@@ -197,60 +203,60 @@
                         </div>
                         <div class="col-md-3">
                             <label>Igreja</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-igreja" placeholder="Nome da igreja" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-igreja" placeholder="Nome da igreja" oninput="filtrar()">
                         </div>
                         <div class="col-md-2">
                             <label>Livro n&ordm;</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-livro" placeholder="N&uacute;mero" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-livro" placeholder="N&uacute;mero" oninput="filtrar()">
                         </div>
                         <div class="col-md-2">
                             <label>Ato n&ordm;</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-ato" placeholder="N&uacute;mero" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-ato" placeholder="N&uacute;mero" oninput="filtrar()">
                         </div>
                     </div>
                     <div class="row g-3 mt-1">
                         <div class="col-md-3">
                             <label>Cidade (Nascimento)</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-nascimento_cidade" placeholder="Cidade" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-nascimento_cidade" placeholder="Cidade" oninput="filtrar()">
                         </div>
                         <div class="col-md-3">
                             <label>Estado (Nascimento)</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-nascimento_estado" placeholder="Ex: SP" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-nascimento_estado" placeholder="Ex: SP" oninput="filtrar()">
                         </div>
                         <div class="col-md-3">
                             <label>Pai</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-pai" placeholder="Nome do pai" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-pai" placeholder="Nome do pai" oninput="filtrar()">
                         </div>
                         <div class="col-md-3">
                             <label>M&atilde;e</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-mae" placeholder="Nome da m&atilde;e" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-mae" placeholder="Nome da m&atilde;e" oninput="filtrar()">
                         </div>
                     </div>
                     <div class="row g-3 mt-1">
                         <div class="col-md-3">
                             <label>Batismo (Local)</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-batismo_local" placeholder="Local" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-batismo_local" placeholder="Local" oninput="filtrar()">
                         </div>
                         <div class="col-md-3">
                             <label>Batismo (Oficiante)</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-batismo_oficiante" placeholder="Oficiante" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-batismo_oficiante" placeholder="Oficiante" oninput="filtrar()">
                         </div>
                         <div class="col-md-3">
                             <label>Admiss&atilde;o (Modo)</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-admissao_modo" placeholder="Modo" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-admissao_modo" placeholder="Modo" oninput="filtrar()">
                         </div>
                         <div class="col-md-3">
                             <label>Admiss&atilde;o (De onde)</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-admissao_deonde" placeholder="Igreja de origem" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-admissao_deonde" placeholder="Igreja de origem" oninput="filtrar()">
                         </div>
                     </div>
                     <div class="row g-3 mt-1">
                         <div class="col-md-3">
                             <label>Endere&ccedil;o</label>
-                            <input type="text" class="form-control form-control-sm" id="filtro-endereco" placeholder="Endere&ccedil;o" oninput="filtrar()">
+                            <input type="text" class="form-control" id="filtro-endereco" placeholder="Endere&ccedil;o" oninput="filtrar()">
                         </div>
                         <div class="col-md-3 d-flex align-items-end gap-2">
-                            <button class="btn btn-outline-secondary btn-sm" onclick="limparFiltros()">Limpar Filtros</button>
+                            <button class="btn btn-outline-secondary" onclick="limparFiltros()">Limpar Filtros</button>
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
                             <span class="badge bg-secondary" id="totalRegistros">0 registro(s)</span>
@@ -280,7 +286,7 @@
                     </table>
                 </div>
                 <div id="emptyState" class="text-center text-muted py-5 d-none">
-                    <p style="font-size:1.2rem; color:#aaa">Nenhum membro encontrado</p>
+                    <p>Nenhum membro encontrado</p>
                     <p class="small text-muted">Use a aba "Inserir Novo Membro" para cadastrar</p>
                 </div>
             </div>
