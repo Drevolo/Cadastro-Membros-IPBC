@@ -6,257 +6,258 @@
     <title>Cadastro de Membros</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .filtro-row { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-        .filtro-row .row { align-items: end; }
+        .form-section { background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .form-section h5 { border-bottom: 2px solid #0d6efd; padding-bottom: 8px; margin-bottom: 16px; }
+        .form-section label { font-weight: 600; font-size: 0.85rem; }
+        .filter-section { background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+        .filter-section label { font-size: 0.8rem; margin-bottom: 2px; }
+        .table-container { max-height: 50vh; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 8px; }
+        .table-container thead th { position: sticky; top: 0; background: #fff; z-index: 1; box-shadow: inset 0 -1px 0 #dee2e6; }
         .cursor-pointer { cursor: pointer; }
         .cursor-pointer:hover { background-color: #f0f0f0; }
-        .table-container { max-height: 70vh; overflow-y: auto; }
-        .table-container thead { position: sticky; top: 0; z-index: 1; }
-        .table-container thead th { background: #fff; box-shadow: inset 0 -1px 0 #dee2e6; }
         .badge-sexo-m { background-color: #0d6efd; }
         .badge-sexo-f { background-color: #d63384; }
-        @media (max-width: 768px) {
-            .filtro-row .col-md-3 { margin-bottom: 10px; }
-        }
+        .section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .section-title .badge { font-size: 0.75rem; }
+        .btn-sm-icon { padding: 0 6px; font-size: 1rem; line-height: 1.5; }
+        hr.section-divider { margin: 24px 0; border-top: 2px dashed #dee2e6; }
     </style>
 </head>
 <body>
     <div class="container-fluid py-3">
+
+        <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h1 class="h3 mb-0">Cadastro de Membros</h1>
-            <div>
-                <span class="badge bg-secondary me-2" id="totalRegistros">0 registros</span>
-                <button class="btn btn-primary" onclick="abrirForm()">+ Novo Membro</button>
-            </div>
+            <h1 class="h4 mb-0">Cadastro de Membros - IPBC</h1>
+            <button class="btn btn-outline-info btn-sm" onclick="exportarCSV()">Exportar CSV</button>
         </div>
 
-        <!-- Filtros -->
-        <div class="filtro-row">
-            <div class="row g-2">
-                <div class="col-md-3">
-                    <label class="form-label small">Nome</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-nome" oninput="filtrar()">
+        <!-- ==================== IN SERIR NOVO MEMBRO ==================== -->
+        <div class="form-section" id="formSection">
+            <div class="section-title">
+                <span>Inserir Novo Membro</span>
+                <span class="badge bg-secondary" id="formStatus">Novo</span>
+            </div>
+
+            <input type="hidden" id="membro-id">
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Nome</label>
+                    <input type="text" class="form-control form-control-sm" id="form-nome">
                 </div>
-                <div class="col-md-2">
-                    <label class="form-label small">Sexo</label>
-                    <select class="form-select form-select-sm" id="filtro-sexo" onchange="filtrar()">
-                        <option value="">Todos</option>
+                <div class="col-md-3">
+                    <label class="form-label">Sexo</label>
+                    <select class="form-select form-select-sm" id="form-sexo">
+                        <option value="">Selecione</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Feminino">Feminino</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small">Igreja</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-igreja" oninput="filtrar()">
+                    <label class="form-label">Igreja</label>
+                    <input type="text" class="form-control form-control-sm" id="form-igreja">
                 </div>
-                <div class="col-md-2">
-                    <label class="form-label small">Livro n&ordm;</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-livro" oninput="filtrar()">
+
+                <div class="col-12"><hr class="my-1"><strong>Nascimento</strong></div>
+                <div class="col-md-4">
+                    <label class="form-label">Data</label>
+                    <input type="date" class="form-control form-control-sm" id="form-nascimento_data">
                 </div>
-                <div class="col-md-2">
-                    <label class="form-label small">Ato n&ordm;</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-ato" oninput="filtrar()">
+                <div class="col-md-4">
+                    <label class="form-label">Cidade</label>
+                    <input type="text" class="form-control form-control-sm" id="form-nascimento_cidade">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Estado</label>
+                    <input type="text" class="form-control form-control-sm" id="form-nascimento_estado">
+                </div>
+
+                <div class="col-12"><hr class="my-1"><strong>Filia&ccedil;&atilde;o</strong></div>
+                <div class="col-md-3">
+                    <label class="form-label">Pai</label>
+                    <input type="text" class="form-control form-control-sm" id="form-pai">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Religi&atilde;o (Pai)</label>
+                    <input type="text" class="form-control form-control-sm" id="form-pai_religiao">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">M&atilde;e</label>
+                    <input type="text" class="form-control form-control-sm" id="form-mae">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Religi&atilde;o (M&atilde;e)</label>
+                    <input type="text" class="form-control form-control-sm" id="form-mae_religiao">
+                </div>
+
+                <div class="col-12"><hr class="my-1"><strong>Batismo</strong></div>
+                <div class="col-md-4">
+                    <label class="form-label">Data</label>
+                    <input type="date" class="form-control form-control-sm" id="form-batismo_data">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Igreja / Local</label>
+                    <input type="text" class="form-control form-control-sm" id="form-batismo_local">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Oficiante</label>
+                    <input type="text" class="form-control form-control-sm" id="form-batismo_oficiante">
+                </div>
+
+                <div class="col-12"><hr class="my-1"><strong>Admiss&atilde;o</strong></div>
+                <div class="col-md-3">
+                    <label class="form-label">Data</label>
+                    <input type="date" class="form-control form-control-sm" id="form-admissao_data">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Modo</label>
+                    <input type="text" class="form-control form-control-sm" id="form-admissao_modo">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">De onde</label>
+                    <input type="text" class="form-control form-control-sm" id="form-admissao_deonde">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Oficiante</label>
+                    <input type="text" class="form-control form-control-sm" id="form-admissao_oficiante">
+                </div>
+
+                <div class="col-12"><hr class="my-1"><strong>Registro</strong></div>
+                <div class="col-md-3">
+                    <label class="form-label">Livro n&ordm;</label>
+                    <input type="text" class="form-control form-control-sm" id="form-livro_numero">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Ato n&ordm;</label>
+                    <input type="text" class="form-control form-control-sm" id="form-ato_numero">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Endere&ccedil;o</label>
+                    <input type="text" class="form-control form-control-sm" id="form-endereco">
                 </div>
             </div>
-            <div class="row g-2 mt-1">
-                <div class="col-md-3">
-                    <label class="form-label small">Cidade (Nascimento)</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-nascimento_cidade" oninput="filtrar()">
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small">Estado (Nascimento)</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-nascimento_estado" oninput="filtrar()">
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small">Pai</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-pai" oninput="filtrar()">
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small">M&atilde;e</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-mae" oninput="filtrar()">
-                </div>
-            </div>
-            <div class="row g-2 mt-1">
-                <div class="col-md-3">
-                    <label class="form-label small">Batismo (Local)</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-batismo_local" oninput="filtrar()">
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small">Batismo (Oficiante)</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-batismo_oficiante" oninput="filtrar()">
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small">Admiss&atilde;o (Modo)</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-admissao_modo" oninput="filtrar()">
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small">Admiss&atilde;o (De onde)</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-admissao_deonde" oninput="filtrar()">
-                </div>
-            </div>
-            <div class="row g-2 mt-1">
-                <div class="col-md-3">
-                    <label class="form-label small">Endere&ccedil;o</label>
-                    <input type="text" class="form-control form-control-sm" id="filtro-endereco" oninput="filtrar()">
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
-                    <button class="btn btn-outline-secondary btn-sm me-2" onclick="limparFiltros()">Limpar</button>
-                    <button class="btn btn-outline-info btn-sm" onclick="exportarCSV()">Exportar CSV</button>
-                </div>
+
+            <div class="mt-3 d-flex gap-2">
+                <button class="btn btn-primary btn-sm" onclick="salvar()">Salvar</button>
+                <button class="btn btn-outline-secondary btn-sm" onclick="limparForm()" id="btnCancelar" style="display:none">Cancelar</button>
             </div>
         </div>
 
-        <!-- Tabela -->
-        <div class="table-container">
-            <table class="table table-striped table-hover table-sm mb-0">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nome</th>
-                        <th>Sexo</th>
-                        <th>Nascimento</th>
-                        <th>Filia&ccedil;&atilde;o</th>
-                        <th>Batismo</th>
-                        <th>Admiss&atilde;o</th>
-                        <th>Livro</th>
-                        <th>Ato</th>
-                        <th>Endere&ccedil;o</th>
-                        <th>Igreja</th>
-                        <th>A&ccedil;&otilde;es</th>
-                    </tr>
-                </thead>
-                <tbody id="tabelaMembros"></tbody>
-            </table>
-        </div>
-        <div id="emptyState" class="text-center text-muted py-5 d-none">
-            <p class="mb-1 fs-5">Nenhum membro cadastrado</p>
-            <p class="small">Clique em "+ Novo Membro" para come&ccedil;ar</p>
-        </div>
-    </div>
+        <hr class="section-divider">
 
-    <!-- Modal Form -->
-    <div class="modal fade" id="formModal" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formModalTitle">Novo Membro</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="membro-id">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="form-nome" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Sexo</label>
-                            <select class="form-select" id="form-sexo">
-                                <option value="">Selecione</option>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Feminino">Feminino</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Igreja</label>
-                            <input type="text" class="form-control" id="form-igreja">
-                        </div>
+        <!-- ==================== PESQUISAR MEMBRO ==================== -->
+        <div>
+            <div class="section-title">
+                <span>Pesquisar Membro</span>
+                <span class="badge bg-secondary" id="totalRegistros">0 registro(s)</span>
+            </div>
 
-                        <div class="col-12"><hr class="my-1"><strong>Nascimento</strong></div>
-                        <div class="col-md-4">
-                            <label class="form-label">Data</label>
-                            <input type="date" class="form-control" id="form-nascimento_data">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Cidade</label>
-                            <input type="text" class="form-control" id="form-nascimento_cidade">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Estado</label>
-                            <input type="text" class="form-control" id="form-nascimento_estado">
-                        </div>
-
-                        <div class="col-12"><hr class="my-1"><strong>Filia&ccedil;&atilde;o</strong></div>
-                        <div class="col-md-3">
-                            <label class="form-label">Pai</label>
-                            <input type="text" class="form-control" id="form-pai">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Religi&atilde;o (Pai)</label>
-                            <input type="text" class="form-control" id="form-pai_religiao">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">M&atilde;e</label>
-                            <input type="text" class="form-control" id="form-mae">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Religi&atilde;o (M&atilde;e)</label>
-                            <input type="text" class="form-control" id="form-mae_religiao">
-                        </div>
-
-                        <div class="col-12"><hr class="my-1"><strong>Batismo</strong></div>
-                        <div class="col-md-4">
-                            <label class="form-label">Data</label>
-                            <input type="date" class="form-control" id="form-batismo_data">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Igreja / Local</label>
-                            <input type="text" class="form-control" id="form-batismo_local">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Oficiante</label>
-                            <input type="text" class="form-control" id="form-batismo_oficiante">
-                        </div>
-
-                        <div class="col-12"><hr class="my-1"><strong>Admiss&atilde;o</strong></div>
-                        <div class="col-md-3">
-                            <label class="form-label">Data</label>
-                            <input type="date" class="form-control" id="form-admissao_data">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Modo</label>
-                            <input type="text" class="form-control" id="form-admissao_modo">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">De onde</label>
-                            <input type="text" class="form-control" id="form-admissao_deonde">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Oficiante</label>
-                            <input type="text" class="form-control" id="form-admissao_oficiante">
-                        </div>
-
-                        <div class="col-12"><hr class="my-1"><strong>Registro</strong></div>
-                        <div class="col-md-3">
-                            <label class="form-label">Livro n&ordm;</label>
-                            <input type="text" class="form-control" id="form-livro_numero">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Ato n&ordm;</label>
-                            <input type="text" class="form-control" id="form-ato_numero">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Endere&ccedil;o</label>
-                            <input type="text" class="form-control" id="form-endereco">
-                        </div>
+            <div class="filter-section">
+                <div class="row g-2">
+                    <div class="col-md-3">
+                        <label>Nome</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-nome" oninput="filtrar()">
+                    </div>
+                    <div class="col-md-2">
+                        <label>Sexo</label>
+                        <select class="form-select form-select-sm" id="filtro-sexo" onchange="filtrar()">
+                            <option value="">Todos</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Igreja</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-igreja" oninput="filtrar()">
+                    </div>
+                    <div class="col-md-2">
+                        <label>Livro n&ordm;</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-livro" oninput="filtrar()">
+                    </div>
+                    <div class="col-md-2">
+                        <label>Ato n&ordm;</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-ato" oninput="filtrar()">
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="salvar()">Salvar</button>
+                <div class="row g-2 mt-1">
+                    <div class="col-md-3">
+                        <label>Cidade (Nascimento)</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-nascimento_cidade" oninput="filtrar()">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Estado (Nascimento)</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-nascimento_estado" oninput="filtrar()">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Pai</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-pai" oninput="filtrar()">
+                    </div>
+                    <div class="col-md-3">
+                        <label>M&atilde;e</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-mae" oninput="filtrar()">
+                    </div>
+                </div>
+                <div class="row g-2 mt-1">
+                    <div class="col-md-3">
+                        <label>Batismo (Local)</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-batismo_local" oninput="filtrar()">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Batismo (Oficiante)</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-batismo_oficiante" oninput="filtrar()">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Admiss&atilde;o (Modo)</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-admissao_modo" oninput="filtrar()">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Admiss&atilde;o (De onde)</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-admissao_deonde" oninput="filtrar()">
+                    </div>
+                </div>
+                <div class="row g-2 mt-1">
+                    <div class="col-md-3">
+                        <label>Endere&ccedil;o</label>
+                        <input type="text" class="form-control form-control-sm" id="filtro-endereco" oninput="filtrar()">
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end gap-2">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="limparFiltros()">Limpar</button>
+                    </div>
                 </div>
             </div>
+
+            <div class="table-container">
+                <table class="table table-striped table-hover table-sm mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nome</th>
+                            <th>Sexo</th>
+                            <th>Nascimento</th>
+                            <th>Filia&ccedil;&atilde;o</th>
+                            <th>Batismo</th>
+                            <th>Admiss&atilde;o</th>
+                            <th>Livro</th>
+                            <th>Ato</th>
+                            <th>Endere&ccedil;o</th>
+                            <th>Igreja</th>
+                            <th>A&ccedil;&otilde;es</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaMembros"></tbody>
+                </table>
+            </div>
+            <div id="emptyState" class="text-center text-muted py-4 d-none">
+                <p class="mb-0">Nenhum membro encontrado</p>
+            </div>
         </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let modalInstance = null;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            modalInstance = new bootstrap.Modal(document.getElementById('formModal'));
-            carregar();
-        });
+        document.addEventListener('DOMContentLoaded', () => { carregar(); });
 
         async function carregar() {
             const params = new URLSearchParams();
@@ -308,37 +309,46 @@
             carregar();
         }
 
-        function abrirForm(data = null) {
-            document.getElementById('formModalTitle').textContent = data ? 'Editar Membro' : 'Novo Membro';
-            document.getElementById('membro-id').value = data ? data.id : '';
-            document.getElementById('form-nome').value = data ? (data.nome || '') : '';
-            document.getElementById('form-sexo').value = data ? (data.sexo || '') : '';
-            document.getElementById('form-nascimento_data').value = data ? (data.nascimento_data || '') : '';
-            document.getElementById('form-nascimento_cidade').value = data ? (data.nascimento_cidade || '') : '';
-            document.getElementById('form-nascimento_estado').value = data ? (data.nascimento_estado || '') : '';
-            document.getElementById('form-pai').value = data ? (data.pai || '') : '';
-            document.getElementById('form-pai_religiao').value = data ? (data.pai_religiao || '') : '';
-            document.getElementById('form-mae').value = data ? (data.mae || '') : '';
-            document.getElementById('form-mae_religiao').value = data ? (data.mae_religiao || '') : '';
-            document.getElementById('form-batismo_data').value = data ? (data.batismo_data || '') : '';
-            document.getElementById('form-batismo_local').value = data ? (data.batismo_local || '') : '';
-            document.getElementById('form-batismo_oficiante').value = data ? (data.batismo_oficiante || '') : '';
-            document.getElementById('form-admissao_data').value = data ? (data.admissao_data || '') : '';
-            document.getElementById('form-admissao_modo').value = data ? (data.admissao_modo || '') : '';
-            document.getElementById('form-admissao_deonde').value = data ? (data.admissao_deonde || '') : '';
-            document.getElementById('form-admissao_oficiante').value = data ? (data.admissao_oficiante || '') : '';
-            document.getElementById('form-livro_numero').value = data ? (data.livro_numero || '') : '';
-            document.getElementById('form-ato_numero').value = data ? (data.ato_numero || '') : '';
-            document.getElementById('form-endereco').value = data ? (data.endereco || '') : '';
-            document.getElementById('form-igreja').value = data ? (data.igreja || '') : '';
-            modalInstance.show();
+        function limparForm() {
+            document.getElementById('membro-id').value = '';
+            document.querySelectorAll('#formSection [id^="form-"]').forEach(el => el.value = '');
+            document.getElementById('formStatus').textContent = 'Novo';
+            document.getElementById('btnCancelar').style.display = 'none';
+            document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function preencherForm(m) {
+            document.getElementById('membro-id').value = m.id;
+            document.getElementById('form-nome').value = m.nome || '';
+            document.getElementById('form-sexo').value = m.sexo || '';
+            document.getElementById('form-nascimento_data').value = m.nascimento_data || '';
+            document.getElementById('form-nascimento_cidade').value = m.nascimento_cidade || '';
+            document.getElementById('form-nascimento_estado').value = m.nascimento_estado || '';
+            document.getElementById('form-pai').value = m.pai || '';
+            document.getElementById('form-pai_religiao').value = m.pai_religiao || '';
+            document.getElementById('form-mae').value = m.mae || '';
+            document.getElementById('form-mae_religiao').value = m.mae_religiao || '';
+            document.getElementById('form-batismo_data').value = m.batismo_data || '';
+            document.getElementById('form-batismo_local').value = m.batismo_local || '';
+            document.getElementById('form-batismo_oficiante').value = m.batismo_oficiante || '';
+            document.getElementById('form-admissao_data').value = m.admissao_data || '';
+            document.getElementById('form-admissao_modo').value = m.admissao_modo || '';
+            document.getElementById('form-admissao_deonde').value = m.admissao_deonde || '';
+            document.getElementById('form-admissao_oficiante').value = m.admissao_oficiante || '';
+            document.getElementById('form-livro_numero').value = m.livro_numero || '';
+            document.getElementById('form-ato_numero').value = m.ato_numero || '';
+            document.getElementById('form-endereco').value = m.endereco || '';
+            document.getElementById('form-igreja').value = m.igreja || '';
+            document.getElementById('formStatus').textContent = 'Editando #' + m.id;
+            document.getElementById('btnCancelar').style.display = 'inline-block';
+            document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
         }
 
         async function editar(id) {
-            const res = await fetch('/api/membros?' + new URLSearchParams({ id: '' }));
+            const res = await fetch('/api/membros');
             const json = await res.json();
             const membro = json.data.find(m => m.id === id);
-            if (membro) abrirForm(membro);
+            if (membro) preencherForm(membro);
         }
 
         async function salvar() {
@@ -375,13 +385,14 @@
                 body: JSON.stringify(data)
             });
 
-            modalInstance.hide();
+            limparForm();
             carregar();
         }
 
         async function deletar(id) {
             if (!confirm('Tem certeza que deseja excluir este membro?')) return;
             await fetch(`/api/membros/${id}`, { method: 'DELETE' });
+            if (document.getElementById('membro-id').value == id) limparForm();
             carregar();
         }
 
