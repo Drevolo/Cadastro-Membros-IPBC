@@ -34,11 +34,25 @@ const MODOS_ADMISSAO = ['Batismo', 'Aclamação', 'Carta de Transferência', 'Re
 
 let cidadesCache = {};
 
+function ajustarLimitesDatas() {
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    const hojeStr = `${ano}-${mes}-${dia}`;
+
+    document.querySelectorAll('input[type="date"]').forEach(el => {
+        el.setAttribute('min', '1900-01-01');
+        el.setAttribute('max', hojeStr);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     popularEstados();
     popularReligioes();
     popularModosAdmissao();
     popularFiltrosAdicionais();
+    ajustarLimitesDatas();
     carregar();
 });
 
