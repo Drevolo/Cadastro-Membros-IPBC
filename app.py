@@ -72,7 +72,10 @@ init_db()
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        data = request.get_json() or request.form
+        if request.is_json:
+            data = request.get_json()
+        else:
+            data = request.form
         user = data.get('username', '')
         pwd = data.get('password', '')
         if user == ADMIN_USER and pwd == ADMIN_PASS:
