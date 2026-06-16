@@ -28,7 +28,7 @@ const ESTADOS_BR = [
     { sigla: 'TO', nome: 'Tocantins' }
 ];
 
-const RELIGIOES = ['Católica', 'Evangélica', 'Espírita', 'Umbanda', 'Candomblé', 'Judaica', 'Testemunha de Jeová', 'Mórmon', 'Budista', 'Outra'];
+const RELIGIOES = ['Católica', 'Evangélica', 'Presbiteriana', 'Espírita', 'Umbanda', 'Candomblé', 'Judaica', 'Testemunha de Jeová', 'Mórmon', 'Budista', 'Outra'];
 
 const MODOS_ADMISSAO = ['Batismo', 'Aclamação', 'Carta de Transferência', 'Reabilitação', 'Profissão de Fé', 'Restauração'];
 
