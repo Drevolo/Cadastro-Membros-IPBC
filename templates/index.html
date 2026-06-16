@@ -40,12 +40,16 @@
                     <span class="badge" id="formStatus">Novo</span>
                 </div>
 
-                <!-- Linha inicial: Nome + Sexo + Igreja -->
+                <!-- Nome (único campo de texto livre) -->
                 <div class="row g-3 mb-3">
-                    <div class="col-md-6">
-                        <label style="font-weight:700; font-size:0.85rem; color:#333; display:block; margin-bottom:4px;">Nome</label>
-                        <input type="text" class="form-control" id="form-nome" placeholder="Nome completo" style="border:2px solid #e5e7eb; border-radius:8px; padding:10px 14px; font-size:0.95rem;">
+                    <div class="col-md-12">
+                        <label style="font-weight:700; font-size:0.9rem; color:#1a1a2e; display:block; margin-bottom:4px;">Nome</label>
+                        <input type="text" class="form-control form-control-lg" id="form-nome" placeholder="Nome completo do membro" style="border:2px solid #1a1a2e; border-radius:8px; padding:12px 16px; font-size:1.05rem;">
                     </div>
+                </div>
+
+                <!-- Sexo + Igreja -->
+                <div class="row g-3 mb-3">
                     <div class="col-md-3">
                         <label style="font-weight:700; font-size:0.85rem; color:#333; display:block; margin-bottom:4px;">Sexo</label>
                         <select class="form-select" id="form-sexo" style="border:2px solid #e5e7eb; border-radius:8px; padding:10px 14px;">
@@ -54,9 +58,9 @@
                             <option value="Feminino">Feminino</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-9">
                         <label style="font-weight:700; font-size:0.85rem; color:#333; display:block; margin-bottom:4px;">Igreja</label>
-                        <input type="text" class="form-control" id="form-igreja" placeholder="Nome da igreja" style="border:2px solid #e5e7eb; border-radius:8px; padding:10px 14px; font-size:0.95rem;">
+                        <input type="text" class="form-control" id="form-igreja" placeholder="Nome da igreja" style="border:2px solid #e5e7eb; border-radius:8px; padding:10px 14px;">
                     </div>
                 </div>
 
@@ -72,12 +76,14 @@
                             <input type="date" class="form-control" id="form-nascimento_data">
                         </div>
                         <div class="col-md-4">
-                            <label>Cidade</label>
-                            <input type="text" class="form-control" id="form-nascimento_cidade" placeholder="Cidade onde nasceu">
+                            <label>Estado</label>
+                            <select class="form-select" id="form-nascimento_estado"></select>
                         </div>
                         <div class="col-md-4">
-                            <label>Estado</label>
-                            <input type="text" class="form-control" id="form-nascimento_estado" placeholder="Ex: SP, RJ, MG">
+                            <label>Cidade</label>
+                            <select class="form-select" id="form-nascimento_cidade" disabled>
+                                <option value="">Selecione um estado primeiro</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -95,7 +101,7 @@
                         </div>
                         <div class="col-md-3">
                             <label>Religi&atilde;o (Pai)</label>
-                            <input type="text" class="form-control" id="form-pai_religiao" placeholder="Religi&atilde;o">
+                            <select class="form-select" id="form-pai_religiao"></select>
                         </div>
                         <div class="col-md-3">
                             <label>M&atilde;e</label>
@@ -103,7 +109,7 @@
                         </div>
                         <div class="col-md-3">
                             <label>Religi&atilde;o (M&atilde;e)</label>
-                            <input type="text" class="form-control" id="form-mae_religiao" placeholder="Religi&atilde;o">
+                            <select class="form-select" id="form-mae_religiao"></select>
                         </div>
                     </div>
                 </div>
@@ -143,7 +149,7 @@
                         </div>
                         <div class="col-md-3">
                             <label>Modo</label>
-                            <input type="text" class="form-control" id="form-admissao_modo" placeholder="Ex: Batismo, Aclama&ccedil;&atilde;o">
+                            <select class="form-select" id="form-admissao_modo"></select>
                         </div>
                         <div class="col-md-3">
                             <label>De onde</label>
@@ -189,7 +195,7 @@
             <div class="tab-pane fade" id="pesquisar">
                 <div class="filter-section">
                     <div class="row g-3">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label>Nome</label>
                             <input type="text" class="form-control" id="filtro-nome" placeholder="Digite um nome" oninput="filtrar()">
                         </div>
@@ -202,6 +208,20 @@
                             </select>
                         </div>
                         <div class="col-md-3">
+                            <label>Estado (Nascimento)</label>
+                            <select class="form-select" id="filtro-nascimento_estado" onchange="carregarCidades(this); filtrar();">
+                                <option value="">Todos</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Cidade (Nascimento)</label>
+                            <select class="form-select" id="filtro-nascimento_cidade" onchange="filtrar()" disabled>
+                                <option value="">Todas</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-3">
                             <label>Igreja</label>
                             <input type="text" class="form-control" id="filtro-igreja" placeholder="Nome da igreja" oninput="filtrar()">
                         </div>
@@ -213,16 +233,17 @@
                             <label>Ato n&ordm;</label>
                             <input type="text" class="form-control" id="filtro-ato" placeholder="N&uacute;mero" oninput="filtrar()">
                         </div>
+                        <div class="col-md-3">
+                            <label>Admiss&atilde;o (Modo)</label>
+                            <select class="form-select" id="filtro-admissao_modo" onchange="filtrar()">
+                                <option value="">Todos</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end gap-2">
+                            <button class="btn btn-outline-secondary" onclick="limparFiltros()">Limpar</button>
+                        </div>
                     </div>
                     <div class="row g-3 mt-1">
-                        <div class="col-md-3">
-                            <label>Cidade (Nascimento)</label>
-                            <input type="text" class="form-control" id="filtro-nascimento_cidade" placeholder="Cidade" oninput="filtrar()">
-                        </div>
-                        <div class="col-md-3">
-                            <label>Estado (Nascimento)</label>
-                            <input type="text" class="form-control" id="filtro-nascimento_estado" placeholder="Ex: SP" oninput="filtrar()">
-                        </div>
                         <div class="col-md-3">
                             <label>Pai</label>
                             <input type="text" class="form-control" id="filtro-pai" placeholder="Nome do pai" oninput="filtrar()">
@@ -231,32 +252,29 @@
                             <label>M&atilde;e</label>
                             <input type="text" class="form-control" id="filtro-mae" placeholder="Nome da m&atilde;e" oninput="filtrar()">
                         </div>
-                    </div>
-                    <div class="row g-3 mt-1">
+                        <div class="col-md-3">
+                            <label>Religi&atilde;o</label>
+                            <select class="form-select" id="filtro-religiao" onchange="filtrar()">
+                                <option value="">Todas</option>
+                            </select>
+                        </div>
                         <div class="col-md-3">
                             <label>Batismo (Local)</label>
                             <input type="text" class="form-control" id="filtro-batismo_local" placeholder="Local" oninput="filtrar()">
                         </div>
+                    </div>
+                    <div class="row g-3 mt-1">
                         <div class="col-md-3">
                             <label>Batismo (Oficiante)</label>
                             <input type="text" class="form-control" id="filtro-batismo_oficiante" placeholder="Oficiante" oninput="filtrar()">
                         </div>
                         <div class="col-md-3">
-                            <label>Admiss&atilde;o (Modo)</label>
-                            <input type="text" class="form-control" id="filtro-admissao_modo" placeholder="Modo" oninput="filtrar()">
-                        </div>
-                        <div class="col-md-3">
                             <label>Admiss&atilde;o (De onde)</label>
                             <input type="text" class="form-control" id="filtro-admissao_deonde" placeholder="Igreja de origem" oninput="filtrar()">
                         </div>
-                    </div>
-                    <div class="row g-3 mt-1">
                         <div class="col-md-3">
                             <label>Endere&ccedil;o</label>
                             <input type="text" class="form-control" id="filtro-endereco" placeholder="Endere&ccedil;o" oninput="filtrar()">
-                        </div>
-                        <div class="col-md-3 d-flex align-items-end gap-2">
-                            <button class="btn btn-outline-secondary" onclick="limparFiltros()">Limpar Filtros</button>
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
                             <span class="badge bg-secondary" id="totalRegistros">0 registro(s)</span>

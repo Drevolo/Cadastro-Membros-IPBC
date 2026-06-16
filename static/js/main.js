@@ -1,4 +1,117 @@
-document.addEventListener('DOMContentLoaded', () => { carregar(); });
+const ESTADOS_BR = [
+    { sigla: 'AC', nome: 'Acre' },
+    { sigla: 'AL', nome: 'Alagoas' },
+    { sigla: 'AP', nome: 'Amapá' },
+    { sigla: 'AM', nome: 'Amazonas' },
+    { sigla: 'BA', nome: 'Bahia' },
+    { sigla: 'CE', nome: 'Ceará' },
+    { sigla: 'DF', nome: 'Distrito Federal' },
+    { sigla: 'ES', nome: 'Espírito Santo' },
+    { sigla: 'GO', nome: 'Goiás' },
+    { sigla: 'MA', nome: 'Maranhão' },
+    { sigla: 'MT', nome: 'Mato Grosso' },
+    { sigla: 'MS', nome: 'Mato Grosso do Sul' },
+    { sigla: 'MG', nome: 'Minas Gerais' },
+    { sigla: 'PA', nome: 'Pará' },
+    { sigla: 'PB', nome: 'Paraíba' },
+    { sigla: 'PR', nome: 'Paraná' },
+    { sigla: 'PE', nome: 'Pernambuco' },
+    { sigla: 'PI', nome: 'Piauí' },
+    { sigla: 'RJ', nome: 'Rio de Janeiro' },
+    { sigla: 'RN', nome: 'Rio Grande do Norte' },
+    { sigla: 'RS', nome: 'Rio Grande do Sul' },
+    { sigla: 'RO', nome: 'Rondônia' },
+    { sigla: 'RR', nome: 'Roraima' },
+    { sigla: 'SC', nome: 'Santa Catarina' },
+    { sigla: 'SP', nome: 'São Paulo' },
+    { sigla: 'SE', nome: 'Sergipe' },
+    { sigla: 'TO', nome: 'Tocantins' }
+];
+
+const RELIGIOES = ['Católica', 'Evangélica', 'Espírita', 'Umbanda', 'Candomblé', 'Judaica', 'Testemunha de Jeová', 'Mórmon', 'Budista', 'Outra'];
+
+const MODOS_ADMISSAO = ['Batismo', 'Aclamação', 'Carta de Transferência', 'Reabilitação', 'Profissão de Fé', 'Restauração'];
+
+let cidadesCache = {};
+
+document.addEventListener('DOMContentLoaded', () => {
+    popularEstados();
+    popularReligioes();
+    popularModosAdmissao();
+    popularFiltrosAdicionais();
+    carregar();
+});
+
+function popularFiltrosAdicionais() {
+    const filtroReligiao = document.getElementById('filtro-religiao');
+    if (filtroReligiao) {
+        RELIGIOES.forEach(r => {
+            filtroReligiao.innerHTML += `<option value="${r}">${r}</option>`;
+        });
+    }
+}
+
+function popularEstados() {
+    document.querySelectorAll('[id$="-nascimento_estado"]').forEach(sel => {
+        const isFiltro = sel.id.startsWith('filtro-');
+        sel.innerHTML = isFiltro ? '<option value="">Todos</option>' : '<option value="">Selecione o estado</option>';
+        ESTADOS_BR.forEach(e => {
+            sel.innerHTML += `<option value="${e.sigla}">${e.nome} (${e.sigla})</option>`;
+        });
+        sel.onchange = () => carregarCidades(sel);
+    });
+}
+
+function popularReligioes() {
+    document.querySelectorAll('[id$="-pai_religiao"], [id$="-mae_religiao"]').forEach(sel => {
+        sel.innerHTML = '<option value="">Selecione</option>';
+        RELIGIOES.forEach(r => {
+            sel.innerHTML += `<option value="${r}">${r}</option>`;
+        });
+    });
+}
+
+function popularModosAdmissao() {
+    document.querySelectorAll('[id$="-admissao_modo"]').forEach(sel => {
+        sel.innerHTML = '<option value="">Selecione</option>';
+        MODOS_ADMISSAO.forEach(m => {
+            sel.innerHTML += `<option value="${m}">${m}</option>`;
+        });
+    });
+}
+
+async function carregarCidades(selectEstado) {
+    const prefix = selectEstado.id.replace('nascimento_estado', '');
+    const selectCidade = document.getElementById(prefix + 'nascimento_cidade');
+    const uf = selectEstado.value;
+    const isFiltro = selectEstado.id.startsWith('filtro-');
+
+    selectCidade.innerHTML = '<option value="">Carregando...</option>';
+    selectCidade.disabled = true;
+
+    if (!uf) {
+        selectCidade.innerHTML = isFiltro ? '<option value="">Todas</option>' : '<option value="">Selecione um estado primeiro</option>';
+        selectCidade.disabled = isFiltro ? false : true;
+        return;
+    }
+
+    try {
+        if (!cidadesCache[uf]) {
+            const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`);
+            const data = await res.json();
+            cidadesCache[uf] = data.map(c => c.nome).sort();
+        }
+
+        selectCidade.innerHTML = isFiltro ? '<option value="">Todas</option>' : '<option value="">Selecione a cidade</option>';
+        cidadesCache[uf].forEach(cidade => {
+            selectCidade.innerHTML += `<option value="${cidade}">${cidade}</option>`;
+        });
+        selectCidade.disabled = false;
+    } catch (e) {
+        selectCidade.innerHTML = '<option value="">Erro ao carregar cidades</option>';
+        selectCidade.disabled = false;
+    }
+}
 
 async function carregar() {
     const params = new URLSearchParams();
@@ -8,6 +121,7 @@ async function carregar() {
     });
     const res = await fetch('/api/membros?' + params.toString());
     const json = await res.json();
+
     const tbody = document.getElementById('tabelaMembros');
     tbody.innerHTML = '';
     document.getElementById('totalRegistros').textContent = json.total + ' registro(s)';
@@ -19,7 +133,7 @@ async function carregar() {
         json.data.forEach(m => {
             const tr = document.createElement('tr');
             tr.className = 'cursor-pointer';
-            tr.onclick = () => { editar(m.id); };
+            tr.onclick = () => editar(m.id);
             const sexoLabel = m.sexo === 'Masculino'
                 ? '<span class="badge badge-sexo-m">M</span>'
                 : m.sexo === 'Feminino'
@@ -50,6 +164,11 @@ function filtrar() { carregar(); }
 
 function limparFiltros() {
     document.querySelectorAll('[id^="filtro-"]').forEach(el => el.value = '');
+    const filtroCidade = document.getElementById('filtro-nascimento_cidade');
+    if (filtroCidade) {
+        filtroCidade.innerHTML = '<option value="">Todas</option>';
+        filtroCidade.disabled = false;
+    }
     carregar();
 }
 
@@ -65,8 +184,17 @@ function preencherForm(m) {
     document.getElementById('form-nome').value = m.nome || '';
     document.getElementById('form-sexo').value = m.sexo || '';
     document.getElementById('form-nascimento_data').value = m.nascimento_data || '';
-    document.getElementById('form-nascimento_cidade').value = m.nascimento_cidade || '';
-    document.getElementById('form-nascimento_estado').value = m.nascimento_estado || '';
+
+    const estadoSel = document.getElementById('form-nascimento_estado');
+    estadoSel.value = m.nascimento_estado || '';
+    if (estadoSel.value) {
+        carregarCidades(estadoSel).then(() => {
+            document.getElementById('form-nascimento_cidade').value = m.nascimento_cidade || '';
+        });
+    } else {
+        document.getElementById('form-nascimento_cidade').value = m.nascimento_cidade || '';
+    }
+
     document.getElementById('form-pai').value = m.pai || '';
     document.getElementById('form-pai_religiao').value = m.pai_religiao || '';
     document.getElementById('form-mae').value = m.mae || '';
